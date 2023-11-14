@@ -29,8 +29,8 @@ This project is a React Native application that utilizes the device's camera to 
 
 ## UML
 
-  - ![UML](./assets/UML.PNG)
-  - ![PR 1](https://github.com/KatKho/camera/pull/1)
+  - ![UML](./assets/UML.png)
+  - [PR 1](https://github.com/KatKho/camera/pull/1)
 
 ## Usage
 
