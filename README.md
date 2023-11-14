@@ -20,18 +20,18 @@ This project is a React Native application that utilizes the device's camera to 
 
 - **Camera Flip** - _Shows the toggle button for flipping the camera._
 
-**Camera Flip Back**
+- **Camera Flip Back**
 <img src="./assets/front.PNG" width="200" alt="Camera Flip Back"/>
 
-**Camera Flip Front**
+- **Camera Flip Front**
 <img src="./assets/back.PNG" width="200" alt="Camera Flip Front"/>
 
 - **QR Code Scanning** - _Displays the camera detecting a QR code._
   
-**Before**
+- **Before**
 <img src="./assets/scan.PNG" width="200" alt="QR Code Scanning"/>
 
-**After**
+- **After**
 <img src="./assets/scanUpdate.PNG" width="200" alt="QR Code Scanning"/>
 
 ## UML
