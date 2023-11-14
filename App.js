@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Alert, Linking } from 'react-native';
+import { StyleSheet, Text, View, Button, Linking } from 'react-native';
 import { Camera } from 'expo-camera';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { NativeBaseProvider, VStack, HStack, Alert, Button as NBButton, IconButton, CloseIcon, Box } from 'native-base';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false); 
+  const [scanned, setScanned] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [showAlert, setShowAlert] = useState(false); 
+  const [scannedData, setScannedData] = useState(''); 
 
   useEffect(() => {
     (async () => {
@@ -16,20 +19,9 @@ export default function App() {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
+    setScannedData(data); 
+    setShowAlert(true); 
     setScanned(true); 
-    Alert.alert(
-      'Open Link',
-      `Do you want to open this link: ${data}?`,
-      [
-        {
-          text: 'Cancel',
-          onPress: () => setScanned(false),
-          style: 'cancel'
-        },
-        { text: 'OK', onPress: () => Linking.openURL(data) } 
-      ],
-      { cancelable: false }
-    );
   };
 
   const flipCamera = () => {
@@ -46,40 +38,82 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Camera
-        style={styles.camera}
-        type={type}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} 
-        barCodeScannerSettings={{
-          barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
-        }}
-      />
-      {scanned && ( 
-        <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
-      )}
-      <View style={styles.buttonContainer}>
-        <Button
-          title="Flip Camera"
-          onPress={flipCamera}
+    <NativeBaseProvider>
+      <View style={styles.container}>
+        <Camera
+          style={styles.camera}
+          type={type}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          barCodeScannerSettings={{
+            barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+          }}
         />
-      </View>
-    </View>
+        {scanned && (
+          <NBButton onPress={() => setScanned(false)} colorScheme="lightBlue" variant="solid" style={styles.scanButton}>
+            Tap to Scan Again
+          </NBButton>
+        )}
+        <View style={styles.buttonContainer}>
+          <NBButton onPress={flipCamera} colorScheme="lightBlue" variant="solid">
+            Flip Camera
+          </NBButton>
+        </View>
+
+        {showAlert && (
+          <Alert w="100%" status="info" colorScheme="warning" variant="top-accent" isOpen={showAlert}>
+          <VStack space={2} flexShrink={1} w="100%">
+            <HStack flexShrink={1} space={2} justifyContent="space-between">
+              <HStack space={2} flexShrink={1}>
+                <Alert.Icon mt="1" />
+                <Text fontSize="md" color="coolGray.800">
+                  Open Link
+                </Text>
+              </HStack>
+              <IconButton
+                variant="unstyled"
+                _focus={{
+                  borderWidth: 0
+                }}
+                icon={<CloseIcon size="3" />}
+                _icon={{
+                  color: "coolGray.600"
+                }}
+                onPress={() => setShowAlert(false)}
+              />
+            </HStack>
+            <Box pl="6" _text={{
+              color: "coolGray.600"
+            }}>
+              Do you want to open this link: {scannedData}?
+            </Box>
+           <HStack space={4} justifyContent="center"> 
+            <NBButton colorScheme="blue" variant="subtle" onPress={() => { setShowAlert(false); setScanned(false); }}>
+              Cancel
+            </NBButton>
+            <NBButton colorScheme="blue" variant="subtle" onPress={() => { Linking.openURL(scannedData); }}>
+              OK
+            </NBButton>
+          </HStack>
+          </VStack>
+        </Alert>
+        )}
+        </View>
+    </NativeBaseProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
+    flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'flex-end', 
+    justifyContent: 'flex-end',
   },
   camera: {
-    ...StyleSheet.absoluteFillObject, 
+    ...StyleSheet.absoluteFillObject,
   },
   buttonContainer: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
     justifyContent: 'center',
   },
