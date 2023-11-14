@@ -36,8 +36,8 @@ This project is a React Native application that utilizes the device's camera to 
 
 ## UML
 
-  - **My app QR Code**
-    <img src="./assets/QR.png" width="200" alt="QR Code Scanning"/>
+- **My app QR Code**
+<img src="./assets/QR.png" width="200" alt="QR Code Scanning"/>
 
   - ![UML](./assets/UML.png)
   - [PR 1](https://github.com/KatKho/camera/pull/1)
