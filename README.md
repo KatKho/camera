@@ -34,7 +34,7 @@ This project is a React Native application that utilizes the device's camera to 
 - **After**
 <img src="./assets/scanUpdate.PNG" width="200" alt="QR Code Scanning"/>
 
-## UML
+## URLs
 
 - **My app QR Code**
 <img src="./assets/QR.png" width="200" alt="QR Code Scanning"/>
